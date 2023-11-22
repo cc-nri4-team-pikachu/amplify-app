@@ -9,6 +9,14 @@
           ],
           "category": "function",
           "resourceName": "usersfunc"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "cardList"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -16,6 +24,12 @@
     }
   },
   "function": {
+    "cardList": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "usersfunc": {
       "build": true,
       "providerPlugin": "awscloudformation",
