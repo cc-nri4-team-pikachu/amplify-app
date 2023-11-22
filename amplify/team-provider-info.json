@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-cardkeeper-dev-142323-authRole",
+      "UnauthRoleArn": "arn:aws:iam::331058670439:role/amplify-cardkeeper-dev-142323-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::331058670439:role/amplify-cardkeeper-dev-142323-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-cardkeeper-dev-142323-deployment",
+      "UnauthRoleName": "amplify-cardkeeper-dev-142323-unauthRole",
+      "StackName": "amplify-cardkeeper-dev-142323",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:331058670439:stack/amplify-cardkeeper-dev-142323/41d17610-88f7-11ee-b638-0a1a4f7c8db5",
+      "AmplifyAppId": "d39holay9fmcgz"
+    },
+    "categories": {
+      "function": {
+        "users": {
+          "deploymentBucketName": "amplify-cardkeeper-dev-142323-deployment",
+          "s3Key": "amplify-builds/users-3450464a76544c527979-build.zip"
+        }
+      },
+      "api": {
+        "cardKeeperApi": {}
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "api": {
+    "cardKeeperApi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "users"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "users": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_users_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "users"
+        }
+      ]
+    },
+    "AMPLIFY_function_users_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "users"
+        }
+      ]
+    }
+  }
+}
