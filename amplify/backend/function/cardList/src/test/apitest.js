@@ -84,36 +84,18 @@ describe("Reading API Server", () => {
         // 実行
         const res = await request.get("/users/1/cards");
         const resData = JSON.parse(res.text);
-        console.log(res.text);
 
         // 検証
         res.should.be.json;
+        resData.length.should.equal(6);
         resData[0].should.deep.equal(compareData1);
-        // resData.records[1].should.deep.equal(compareData2);
-        // resData.records[2].should.deep.equal(compareData3);
-        // resData.records[3].should.deep.equal(compareData4);
-        // resData.records[4].should.deep.equal(compareData5);
-        // resData.records[5].should.deep.equal(compareData7);
+        resData[1].should.deep.equal(compareData2);
+        resData[2].should.deep.equal(compareData3);
+        // テストデータとして、４より５が先に来るようにしている
+        resData[3].should.deep.equal(compareData5);
+        resData[4].should.deep.equal(compareData4);
+        resData[5].should.deep.equal(compareData7);
       });
-
-      // // 異常系 - 0件検証
-      // it("should return empty", async () => {
-      //   // 実行
-      //   const res = await request.get("/users/0/books/0");
-      //   const resData = JSON.parse(res.text);
-
-      //   //検証
-      //   resData.should.deep.equal({ records: [] });
-      // });
-
-      // // 異常系 - パラメータ不備
-      // it("should return Status 400", async () => {
-      //   // 実行
-      //   const res = await request.get("/users/AAA/books/AAA");
-
-      //   //検証
-      //   res.should.have.status(400);
-      // });
     });
 
     // // 【POST】読書の記録投稿API
