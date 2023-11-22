@@ -1,0 +1,70 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-cardkeeper-dev-145026-authRole",
+      "UnauthRoleArn": "arn:aws:iam::897995364530:role/amplify-cardkeeper-dev-145026-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::897995364530:role/amplify-cardkeeper-dev-145026-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-cardkeeper-dev-145026-deployment",
+      "UnauthRoleName": "amplify-cardkeeper-dev-145026-unauthRole",
+      "StackName": "amplify-cardkeeper-dev-145026",
+      "StackId": "arn:aws:cloudformation:us-east-1:897995364530:stack/amplify-cardkeeper-dev-145026/0aa35830-88fb-11ee-b929-124b6f995b23",
+      "AmplifyAppId": "dyudro066pjpi"
+    }
+  },
+  "function": {
+    "usersfunc": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2023-11-22T05:54:07.678Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-11-22T05:54:13.849Z",
+      "distZipFilename": "usersfunc-4e44324d6d6179774e79-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-cardkeeper-dev-145026-deployment",
+        "s3Key": "amplify-builds/usersfunc-4e44324d6d6179774e79-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/function/usersfunc-cloudformation-template.json",
+        "logicalId": "functionusersfunc"
+      },
+      "lastPushTimeStamp": "2023-11-22T05:55:57.434Z",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::897995364530:role/cardkeeperLambdaRole29d4107c-dev",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:897995364530:function:usersfunc-dev",
+        "Name": "usersfunc-dev",
+        "LambdaExecutionRole": "cardkeeperLambdaRole29d4107c-dev"
+      },
+      "lastPushDirHash": "FcKf2mza51i1D3L31bFAs7OgOzg="
+    }
+  },
+  "api": {
+    "cardkeeperapi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "usersfunc",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/api/cardkeeperapi-cloudformation-template.json",
+        "logicalId": "apicardkeeperapi"
+      },
+      "lastPushTimeStamp": "2023-11-22T05:55:57.434Z",
+      "output": {
+        "ApiName": "cardkeeperapi",
+        "RootUrl": "https://s6wiwnbvob.execute-api.us-east-1.amazonaws.com/dev",
+        "ApiId": "s6wiwnbvob"
+      },
+      "lastPushDirHash": "CvoFO8y/5Ec/IfHfk3ObV/CWD3g="
+    }
+  }
+}
