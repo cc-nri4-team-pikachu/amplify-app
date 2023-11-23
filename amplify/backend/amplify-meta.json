@@ -38,6 +38,12 @@
         "LambdaExecutionRole": "cardkeeperLambdaRole29d4107c-dev"
       },
       "lastPushDirHash": "FcKf2mza51i1D3L31bFAs7OgOzg="
+    },
+    "cardList": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
     }
   },
   "api": {
@@ -52,13 +58,21 @@
             "Name",
             "Arn"
           ]
+        },
+        {
+          "category": "function",
+          "resourceName": "cardList",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
         }
       ],
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/api/cardkeeperapi-cloudformation-template.json",
         "logicalId": "apicardkeeperapi"
       },
-      "lastPushTimeStamp": "2023-11-22T05:55:57.434Z",
+      "lastPushTimeStamp": "2023-11-22T09:39:45.993Z",
       "output": {
         "ApiName": "cardkeeperapi",
         "RootUrl": "https://s6wiwnbvob.execute-api.us-east-1.amazonaws.com/dev",
