@@ -11,11 +11,11 @@ module.exports = {
     getCardList(userId, sort="expire_date") {
         return knex(CARD)
             .select({
-            card_id: "card.card_id",
-            store_name: "card.store_name",
-            benefit_name: "card.benefit_name",
-            benefit_count: "card.benefit_count",
-            expire_date: "card.expire_date",
+            cardId: "card.card_id",
+            storeName: "card.store_name",
+            benefitName: "card.benefit_name",
+            benefitCount: "card.benefit_count",
+            expireDate: "card.expire_date",
             image: "card.image",
             tag: "card.tag",
             })
@@ -41,10 +41,10 @@ module.exports = {
         return knex
             .select({
             cardId: "card.card_id",
-            store_name: "card.store_name",
-            benefit_name: "card.benefit_name",
-            benefit_count: "card.benefit_count",
-            expire_date: "card.expire_date",
+            storeName: "card.store_name",
+            benefitName: "card.benefit_name",
+            benefitCount: "card.benefit_count",
+            expireDate: "card.expire_date",
             image: "card.image",
             tag: "card.tag",
             })
@@ -55,8 +55,8 @@ module.exports = {
             "expire_date": ">=" + todayDate,
             })
             .orderBy(sort, "asc")
-            .catch((err) => {
-            throw Error(err);
+            .catch(function (err) {
+                console.error(err);
             });
         },
 
@@ -97,14 +97,15 @@ module.exports = {
             "benefit_count": addData.benefitCount,
             "expire_date": addData.expireDate,
             "image": addData.image,
+            "expire_flg": 0,
             "tag": addData.tag,
         })
         .then((result)=>{
-            return result[0].card_id;
+            return result[0];
         })
-        .catch((err) => {
-            throw Error(err);
-        }); 
+        .catch(function (err) {
+            console.error(err);
+        });
     },
 
 

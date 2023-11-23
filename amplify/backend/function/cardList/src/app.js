@@ -16,6 +16,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const model = require('./model');
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+const { type } = require('os');
 
 // Timezoneを日本時間に設定
 const formatDate = function (date) {
@@ -31,27 +32,40 @@ const validateRequestCards = function (body) {
 	// もしbodyにtime, place, reviewが存在する場合、それぞれを変数に格納
 	// 存在しない場合は初期値を設定
 	const {
-		store_name = 'str',
-		benefit_name = 'str',
-		benefit_count = 0,
-		expire_date = '2000-10-10',
+		storeName = 'str',
+		benefitName = 'str',
+		benefitCount = 0,
+		expireDate = '2000-10-10',
 		image = 'str',
 		tag = 'str'
 	} = body;
 
-	const tmpDate = new Date(expire_date);
+  // expireDateのバリデーションをしたい。例えば、１２３とか入れたらエラーにしたい。
+  const tmpDate = new Date(expireDate);
 	const dateFlg = isNaN(tmpDate.getDate());
 
 	if (
+    // データ型のバリデーション
 		dateFlg ||
-		typeof store_name !== 'string' ||
-		typeof benefit_name !== 'string' ||
-		typeof benefit_count !== 'number' ||
+    typeof expireDate !== 'string' ||
+		typeof storeName !== 'string' ||
+		typeof benefitName !== 'string' ||
+		typeof benefitCount !== 'number' ||
 		typeof image !== 'string' ||
 		typeof tag !== 'string'
 	) {
 		return false;
-	} else {
+	} else if(
+    // データ長のバリデーション
+    storeName.length > 100 ||
+    benefitName.length > 100 ||
+    benefitCount < 0 ||
+    benefitCount > 999 ||
+    image.length > 255 ||
+    tag.length > 255
+  ) {
+    return false;
+  } else{
 		return true;
 	}
 };
@@ -92,6 +106,7 @@ app.use(function (req, res, next) {
 app.get('/users/:userId/cards', function (req, res) {
 	// userIdに紐づくカード情報を取得
 	const userId = req.params.userId;
+  console.log("GET!!!!!!!!!");
 	let result = [];
 	// TODO: クエリパラメータが存在し、trueの場合は有効期限内のカード情報を取得
 	// if(req.query.valid && req.query.valid == "true"){
@@ -102,8 +117,9 @@ app.get('/users/:userId/cards', function (req, res) {
 		.then((result) => {
 			// 有効期限をYYYY/MM/DD形式に変換
 			result.map((card) => {
-				card.expire_date = formatDate(card.expire_date);
+				card.expireDate = formatDate(card.expireDate);
 			});
+      console.log(result);
 			res.status(200).json(result);
 		})
 		.catch((err) => {
@@ -116,6 +132,9 @@ app.post('/users/:userId/cards', function (req, res) {
 	// 新規にカード情報を登録
 	const userId = req.params.userId;
 	const card = req.body;
+  console.log("==========================");
+  console.log(validateRequestCards(card));
+  console.log("==========");
 	if (validateRequestCards(card)) {
 		const result = model
 			.addCard(userId, card)
@@ -123,7 +142,7 @@ app.post('/users/:userId/cards', function (req, res) {
 				res.status(201).json({ msg: 'success', cardId: result });
 			})
 			.catch((err) => {
-				// API GatewayにHTTPステータスコード500を返したい
+				// knexで例外が発生した場合はここに入る
 				res.status(500).json({ msg: 'error', err: err });
 			});
 	} else {
@@ -131,21 +150,45 @@ app.post('/users/:userId/cards', function (req, res) {
 	}
 });
 
-app.delete('/users/:userId/cards/cardId', function (req, res) {
+app.delete('/users/:userId/cards', function (req, res) {
 	// カード情報を削除
 	const userId = req.params.userId;
-	const cardId = req.params.cardId;
-	const result = model.deleteCard(userId, cardId);
-	res.status(201).json({ msg: 'success', result: result });
+	if(req.query.cardId){
+    const cardId = req.query.cardId;
+    model.deleteCard(userId, cardId)
+          .then((result) => {
+            res.status(201).json({ msg: 'success', result: result });
+          })
+          .catch((err) => {
+            // knexで例外が発生した場合はここに入る
+            res.status(500).json({ msg: 'error', err: err });
+          });
+  }else{
+    res.status(400).json({ msg: 'error', err: 'Invalid Request' });
+  }
 });
 
-app.put('/users/:userId/cards/:cardId', function (req, res) {
+app.put('/users/:userId/cards', function (req, res) {
 	// カード情報を更新
 	const userId = req.params.userId;
-	const cardId = req.params.cardId;
-	const card = req.body;
-	const result = model.updateCard(userId, cardId, card);
-	res.status(201).json({ msg: 'success', result: result });
+	if(req.query.cardId){
+    const cardId = req.query.cardId;
+    const card = req.body;
+
+    if(validateRequestCards(card) == false){
+      res.status(400).json({ msg: 'error', err: 'Invalid Request' });
+    }
+    model.updateCard(userId, cardId, card)
+          .then((result) => {
+            res.status(201).json({ msg: 'success', result: result });
+          })
+          .catch((err) => {
+            // knexで例外が発生した場合はここに入る
+            res.status(500).json({ msg: 'error', err: err });
+          });
+  }else{
+    res.status(400).json({ msg: 'error', err: 'Invalid Request' });
+  }
 });
 
 app.listen(3000, function () {
