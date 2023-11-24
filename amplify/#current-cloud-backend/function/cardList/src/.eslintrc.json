@@ -1,0 +1,10 @@
+{
+    "root": true,
+    "env": {
+      "es2021": true
+    },
+    "rules": {
+      "no-console": "off"
+    },
+    "ignorePatterns": ["/node_modules/", "/dist/"]
+  }

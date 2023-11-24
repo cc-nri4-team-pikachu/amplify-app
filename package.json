@@ -16,6 +16,7 @@
     "@ant-design/react-native": "^5.0.5",
     "@react-native-async-storage/async-storage": "^1.19.8",
     "@react-native-community/netinfo": "^11.1.0",
+    "@react-native-picker/picker": "^2.5.1",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@react-navigation/stack": "^6.3.20",

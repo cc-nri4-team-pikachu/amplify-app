@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.8.2\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -14,18 +14,6 @@
       "Type": "String"
     },
     "s3Key": {
-      "Type": "String"
-    },
-    "dbHost": {
-      "Type": "String"
-    },
-    "dbName": {
-      "Type": "String"
-    },
-    "dbUser": {
-      "Type": "String"
-    },
-    "dbPassword": {
       "Type": "String"
     }
   },
@@ -59,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "cardList",
+            "usersfunc",
             {
               "Fn::Join": [
                 "",
                 [
-                  "cardList",
+                  "usersfunc",
                   "-",
                   {
                     "Ref": "env"
@@ -81,18 +69,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "DB_HOST": {
-              "Ref": "dbHost"
-            },
-            "DB_NAME": {
-              "Ref": "dbName"
-            },
-            "DB_USER": {
-              "Ref": "dbUser"
-            },
-            "DB_PASSWORD": {
-              "Ref": "dbPassword"
             }
           }
         },
@@ -113,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "cardkeeperLambdaRole4188ef7e",
+            "cardkeeperLambdaRole29d4107c",
             {
               "Fn::Join": [
                 "",
                 [
-                  "cardkeeperLambdaRole4188ef7e",
+                  "cardkeeperLambdaRole29d4107c",
                   "-",
                   {
                     "Ref": "env"
