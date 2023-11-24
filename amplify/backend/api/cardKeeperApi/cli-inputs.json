@@ -12,13 +12,7 @@
       "name": "/users/{userId}/cards",
       "lambdaFunction": "cardList",
       "permissions": {
-        "setting": "private",
-        "auth": [
-          "create",
-          "read",
-          "update",
-          "delete"
-        ]
+        "setting": "open"
       }
     }
   }

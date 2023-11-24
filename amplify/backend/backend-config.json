@@ -37,6 +37,38 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_cardList_dbHost": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "cardList"
+        }
+      ]
+    },
+    "AMPLIFY_function_cardList_dbName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "cardList"
+        }
+      ]
+    },
+    "AMPLIFY_function_cardList_dbPassword": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "cardList"
+        }
+      ]
+    },
+    "AMPLIFY_function_cardList_dbUser": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "cardList"
+        }
+      ]
+    },
     "AMPLIFY_function_usersfunc_deploymentBucketName": {
       "usedBy": [
         {
