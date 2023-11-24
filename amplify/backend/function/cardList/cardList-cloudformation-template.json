@@ -82,9 +82,6 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "HOST": {
-              "Ref": "host"
-            },
             "DB_HOST": {
               "Ref": "dbHost"
             },
