@@ -1,10 +1,10 @@
-const awsServerlessExpress = require('aws-serverless-express');
+const serververlessExpress = require('@vendia/serverless-express')
 const app = require('./app');
 
 /**
  * @type {import('http').Server}
  */
-const server = awsServerlessExpress.createServer(app);
+const server = serververlessExpress.createServer(app);
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -12,5 +12,5 @@ const server = awsServerlessExpress.createServer(app);
 exports.handler = async (event, context) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   context.callbackWaitsForEmptyEventLoop = false;
-  return awsServerlessExpress.proxy(server, event, context, 'PROMISE').promise;
+  return serververlessExpress({ app })(event, context);
 };

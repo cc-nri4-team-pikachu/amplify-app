@@ -15,8 +15,8 @@ Amplify Params - DO NOT EDIT */
 const express = require('express');
 const bodyParser = require('body-parser');
 const model = require('./model');
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
-const { type } = require('os');
+//const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+//const { type } = require('os');
 
 // Timezoneを日本時間に設定
 const formatDate = function (date) {
@@ -91,9 +91,10 @@ if (process.env.ENV === 'development') {
 
 		next();
 	});
-} else {
-	app.use(awsServerlessExpressMiddleware.eventContext());
 }
+//  else {
+// 	app.use(awsServerlessExpressMiddleware.eventContext());
+// }
 
 // Enable CORS for all methods
 
