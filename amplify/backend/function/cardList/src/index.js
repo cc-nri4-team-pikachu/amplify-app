@@ -1,28 +1,16 @@
-// const serverless = require('serverless-http');
-// const app = require('./app');
-
-// const handler = serverless(app);
-
-// const startServer = async () => {
-//     app.listen(3000, () => {
-//       console.log("listening on port 3000!");
-//     });
-// }
-
-// startServer();
-
-// module.exports.handler = (event, context, callback) => {
-//     const response = handler(event, context, callback);
-//     return response;
-// };
-
 const serverlessExpress = require('@vendia/serverless-express')
+//const serverlessExpress = require('aws-serverless-express')
 const app = require('./app');
 
-// /**
-//  * @type {import('http').Server}
-//  */
-// const server = serververlessExpress.createServer(app);
+/**
+ * @type {import('http').Server}
+ */
+const server = serververlessExpress.createServer(app);
+
+exports.handler = (event, context) => {
+  console.log(`EVENT: ${JSON.stringify(event)}`);
+  return serverlessExpress.proxy(server, event, context);
+};
 
 // /**
 //  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -48,9 +36,9 @@ const app = require('./app');
 //   return serverlessExpressInstance(event, context)
 // }
 
-exports.handler = (event, context) =>{
-  // if (serverlessExpressInstance) return serverlessExpressInstance(event, context)
+// exports.handler = (event, context) =>{
+//   // if (serverlessExpressInstance) return serverlessExpressInstance(event, context)
 
-  // return setup(event, context)
-  return serverlessExpress({ app })(event, context)
-}
+//   // return setup(event, context)
+//   return serverlessExpress({ app })(event, context)
+// }
