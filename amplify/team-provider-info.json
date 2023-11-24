@@ -23,9 +23,6 @@
           "dbUser": "postgres",
           "dbPassword": "postgres"
         }
-      },
-      "api": {
-        "cardkeeperapi": {}
       }
     }
   }

@@ -46,31 +46,5 @@
       "dependsOn": []
     }
   },
-  "api": {
-    "cardkeeperapi": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "cardList",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ],
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/api/cardkeeperapi-cloudformation-template.json",
-        "logicalId": "apicardkeeperapi"
-      },
-      "lastPushTimeStamp": "2023-11-24T01:36:04.693Z",
-      "output": {
-        "ApiName": "cardkeeperapi",
-        "RootUrl": "https://s6wiwnbvob.execute-api.us-east-1.amazonaws.com/dev",
-        "ApiId": "s6wiwnbvob"
-      },
-      "lastPushDirHash": "CvoFO8y/5Ec/IfHfk3ObV/CWD3g="
-    }
-  }
+  "api": {}
 }
