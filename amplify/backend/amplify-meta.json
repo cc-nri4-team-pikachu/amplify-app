@@ -46,5 +46,20 @@
       "dependsOn": []
     }
   },
-  "api": {}
+  "api": {
+    "cardkeeper": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "cardList",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    }
+  }
 }

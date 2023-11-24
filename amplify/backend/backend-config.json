@@ -1,5 +1,20 @@
 {
-  "api": {},
+  "api": {
+    "cardkeeper": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "cardList"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "function": {
     "cardList": {
       "build": true,
