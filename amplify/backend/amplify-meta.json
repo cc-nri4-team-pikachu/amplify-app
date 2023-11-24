@@ -53,14 +53,6 @@
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "usersfunc",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        },
-        {
-          "category": "function",
           "resourceName": "cardList",
           "attributes": [
             "Name",
@@ -72,7 +64,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/api/cardkeeperapi-cloudformation-template.json",
         "logicalId": "apicardkeeperapi"
       },
-      "lastPushTimeStamp": "2023-11-22T09:39:45.993Z",
+      "lastPushTimeStamp": "2023-11-24T01:36:04.693Z",
       "output": {
         "ApiName": "cardkeeperapi",
         "RootUrl": "https://s6wiwnbvob.execute-api.us-east-1.amazonaws.com/dev",
