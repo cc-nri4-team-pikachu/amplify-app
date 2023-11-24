@@ -42,8 +42,17 @@ export const CardListScreen = () => {
     console.log(storeName);
     console.log(expireDate);
 
+    PushNotification.localNotificationSchedule({
+      channelId: 'test-channel',
+      title: 'schedule',
+      message: 'Good!',
+      date: new Date(Date.now() + 20 * 1000),
+      allowWhileIdle: true,
+    });
+
     hideModal();
   };
+
   return (
     <Provider>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

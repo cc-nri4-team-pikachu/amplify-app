@@ -1,10 +1,14 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {InputItem, Button, WhiteSpace} from '@ant-design/react-native';
+import PushNotification from 'react-native-push-notification';
 
 export const LoginScreen = ({navigation}) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  useEffect(() => {
+    createChannels();
+  }, []);
 
   const handleUserNameChange = value => {
     setUserName(value);
@@ -12,6 +16,14 @@ export const LoginScreen = ({navigation}) => {
 
   const handlePasswordChange = value => {
     setPassword(value);
+  };
+
+  const createChannels = () => {
+    PushNotification.createChannel({
+      channelId: 'test-channel',
+      channelName: 'Test Channel',
+    });
+    console.log('create channel');
   };
 
   return (
