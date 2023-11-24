@@ -7,16 +7,22 @@ import {RegisterSingleCard} from './RegisterSingleCard';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {StyleSheet} from 'react-native';
 import {blue} from '@ant-design/colors';
+import PushNotification from 'react-native-push-notification';
+import moment from 'moment'
+
+require('moment-timezone');
+moment.tz.setDefault('Asia/Tokyo');
+
+const initAllCard = [
+  {title: '唐揚げ', expireDate: '2020/12/31'},
+  {title: '温泉', expireDate: '2021/1/31'},
+  {title: '美容室', expireDate: '2022/2/28'},
+  {title: '美容室', expireDate: '2022/2/28'},
+  {title: '美容室', expireDate: '2022/2/28'},
+];
 
 export const CardListScreen = () => {
-  const allCard = [
-    {title: '唐揚げ', expireDate: '2020/12/31'},
-    {title: '温泉', expireDate: '2021/1/31'},
-    {title: '美容室', expireDate: '2022/2/28'},
-    {title: '美容室', expireDate: '2022/2/28'},
-    {title: '美容室', expireDate: '2022/2/28'},
-  ];
-
+  const [allCard, setAllCard] = useState(initAllCard);
   const [modalVisible, setModalVisible] = useState(false);
   const [storeName, setStoreName] = useState('');
   const [expireDate, setExpireDate] = useState('');
@@ -37,17 +43,46 @@ export const CardListScreen = () => {
     setExpireDate(text);
   };
 
+  const handleAllCard = cards => {
+    setAllCard(cards);
+  }
+
   const handleSubmmit = () => {
     //ToDo 店舗情報登録APIの呼び出し
     console.log(storeName);
     console.log(expireDate);
 
-    PushNotification.localNotificationSchedule({
+    PushNotification.localNotification({
       channelId: 'test-channel',
-      title: 'schedule',
-      message: 'Good!',
-      date: new Date(Date.now() + 20 * 1000),
-      allowWhileIdle: true,
+      title: 'CardKeeper',
+      message: 'カードを登録しました。',
+    });
+
+    // scheduler追加
+    const expireMoment = moment.tz(expireDate + " 09:00", "Asia/Tokyo");
+    let notifys = [
+      {date: expireMoment.clone().subtract(1, 'months').toDate(), message: "のスタンプカードの締切が1カ月前です"},
+      {date: expireMoment.clone().subtract(1, 'w').toDate(), message: "のスタンプカードの締切が1週間前です。行く予定を立てましょう"},
+      {date: expireMoment.clone().subtract(3, 'd').toDate(), message: "のスタンプカードの締切が3日前です！"},
+      {date: expireMoment.clone().subtract(1, 'd').toDate(), message: "のスタンプカードの締切が1日前です！！"},
+      {date: expireMoment.clone().toDate(), message: "のスタンプカードの締切は今日までです！！"},
+    ]
+    notifys.forEach((notify) => {
+      console.log("add scheduler: ", notify.date);
+      PushNotification.localNotificationSchedule({
+        //... You can use all the options from localNotifications
+        channelId: 'test-channel',
+        title: "CardKeeper",
+        message: `${storeName}${notify.message}`, // (required)
+        date: notify.date, // in 60 secs
+        allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
+      });
+    });
+
+    PushNotification.localNotification({
+      channelId: 'test-channel',
+      title: 'CardKeeper',
+      message: 'カードを登録しました。',
     });
 
     hideModal();
