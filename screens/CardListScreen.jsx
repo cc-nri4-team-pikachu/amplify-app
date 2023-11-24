@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {ScrollView, View, TouchableOpacity} from 'react-native';
 import {Modal, Button, WhiteSpace, Provider} from '@ant-design/react-native';
 import SingleCard from './SingleCard';
@@ -14,18 +14,36 @@ require('moment-timezone');
 moment.tz.setDefault('Asia/Tokyo');
 
 const initAllCard = [
-  {title: '唐揚げ', expireDate: '2020/12/31'},
-  {title: '温泉', expireDate: '2021/1/31'},
-  {title: '美容室', expireDate: '2022/2/28'},
-  {title: '美容室', expireDate: '2022/2/28'},
-  {title: '美容室', expireDate: '2022/2/28'},
+  {storeName: '唐揚げ', expireDate: '2020/12/31'},
+  {storeName: '温泉', expireDate: '2021/1/31'},
+  {storeName: '美容室', expireDate: '2022/2/28'},
+  {storeName: '美容室', expireDate: '2022/2/28'},
+  {storeName: '美容室', expireDate: '2022/2/28'},
 ];
+
+const userId = 1;
+const cardApiUri = `https://x2knth17r1.execute-api.us-east-1.amazonaws.com/dev/users/${userId}/cards`;
 
 export const CardListScreen = () => {
   const [allCard, setAllCard] = useState(initAllCard);
   const [modalVisible, setModalVisible] = useState(false);
   const [storeName, setStoreName] = useState('');
   const [expireDate, setExpireDate] = useState('');
+
+  const getMyCard = () => {
+    fetch(cardApiUri)
+      .then((res) => {
+        return res.json();
+      }).then((result) => { 
+        console.log(`userId ${userId} cards: `,result);
+        setAllCard(result);
+      }).catch((error) => {
+        console.error(error);
+      })
+  };
+  useEffect(() => {
+    getMyCard();
+  }, []);
 
   const showModal = () => {
     setModalVisible(true);
@@ -43,20 +61,26 @@ export const CardListScreen = () => {
     setExpireDate(text);
   };
 
-  const handleAllCard = cards => {
-    setAllCard(cards);
-  }
-
   const handleSubmmit = () => {
     //ToDo 店舗情報登録APIの呼び出し
     console.log(storeName);
     console.log(expireDate);
 
-    PushNotification.localNotification({
-      channelId: 'test-channel',
-      title: 'CardKeeper',
-      message: 'カードを登録しました。',
-    });
+    fetch(cardApiUri , {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        storeName: storeName,
+        expireDate: expireDate
+      })
+    }).then((res) => {
+      console.log(res);
+      console.log("レスポンス送信");
+    }).catch((error) =>{
+      console.error(error);
+    })
 
     // scheduler追加
     const expireMoment = moment.tz(expireDate + " 09:00", "Asia/Tokyo");
@@ -84,6 +108,9 @@ export const CardListScreen = () => {
       title: 'CardKeeper',
       message: 'カードを登録しました。',
     });
+    console.log("カード登録しました")
+
+    getMyCard();
 
     hideModal();
   };
@@ -104,7 +131,7 @@ export const CardListScreen = () => {
           {allCard.map((card, index) => (
             <SingleCard
               key={index}
-              title={card.title}
+              title={card.storeName}
               expireDate={card.expireDate}
             />
           ))}
