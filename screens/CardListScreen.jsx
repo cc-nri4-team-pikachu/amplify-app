@@ -1,6 +1,5 @@
-import React from 'react';
-import {useState, useEffect} from 'react';
-import {ScrollView, View, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {ScrollView, View, TouchableOpacity, Text} from 'react-native';
 import {Modal, Button, WhiteSpace, Provider} from '@ant-design/react-native';
 import SingleCard from './SingleCard';
 import {RegisterSingleCard} from './RegisterSingleCard';
@@ -8,7 +7,8 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {StyleSheet} from 'react-native';
 import {blue} from '@ant-design/colors';
 import PushNotification from 'react-native-push-notification';
-import moment from 'moment'
+import moment from 'moment';
+import {Auth} from 'aws-amplify';
 
 require('moment-timezone');
 moment.tz.setDefault('Asia/Tokyo');
@@ -21,28 +21,50 @@ const initAllCard = [
   {storeName: '美容室', expireDate: '2022/2/28'},
 ];
 
-const userId = 1;
-const cardApiUri = `https://x2knth17r1.execute-api.us-east-1.amazonaws.com/dev/users/${userId}/cards`;
+const cardApiUri =
+  'https://x2knth17r1.execute-api.us-east-1.amazonaws.com/dev/users';
 
 export const CardListScreen = () => {
   const [allCard, setAllCard] = useState(initAllCard);
   const [modalVisible, setModalVisible] = useState(false);
   const [storeName, setStoreName] = useState('');
   const [expireDate, setExpireDate] = useState('');
+  const [userId, setUserId] = useState(null);
 
-  const getMyCard = () => {
-    fetch(cardApiUri)
-      .then((res) => {
-        return res.json();
-      }).then((result) => { 
-        console.log(`userId ${userId} cards: `,result);
-        setAllCard(result);
-      }).catch((error) => {
-        console.error(error);
-      })
+  const fetchUserInfo = async () => {
+    try {
+      // Amplify Auth モジュールを使用してユーザー情報を取得
+
+      //要変更（TODO）
+      setUserId(1);
+      await getMyCard(1);
+
+      const user = await Auth.currentAuthenticatedUser();
+      //38-40行目はをuser.userNameを使うように変更する必要がある。（TODO）
+      //setUserId(user.userName);
+      //await getMyCard(user.userName);
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
   };
+
+  const getMyCard = async userName => {
+    const cardApiUserUri = `${cardApiUri}/${userName}/cards`;
+
+    fetch(cardApiUserUri)
+      .then(res => res.json())
+      .then(result => {
+        console.log(`userId ${userId} cards: `, result);
+        setAllCard(result);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
-    getMyCard();
+    //取得
+    fetchUserInfo();
   }, []);
 
   const showModal = () => {
@@ -61,42 +83,61 @@ export const CardListScreen = () => {
     setExpireDate(text);
   };
 
-  const handleSubmmit = () => {
-    //ToDo 店舗情報登録APIの呼び出し
+  const handleSubmmit = async () => {
+    // ToDo 店舗情報登録APIの呼び出し
     console.log(storeName);
     console.log(expireDate);
 
-    fetch(cardApiUri , {
-      method: "POST",
+    const cardApiUserUri = `${cardApiUri}/${userId}/cards`;
+
+    fetch(cardApiUserUri, {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         storeName: storeName,
-        expireDate: expireDate
-      })
-    }).then((res) => {
-      console.log(res);
-      console.log("レスポンス送信");
-    }).catch((error) =>{
-      console.error(error);
+        expireDate: expireDate,
+      }),
     })
+      .then(res => {
+        console.log(res);
+        console.log('レスポンス送信');
+      })
+      .catch(error => {
+        console.error(error);
+      });
 
     // scheduler追加
-    const expireMoment = moment.tz(expireDate + " 09:00", "Asia/Tokyo");
+    const expireMoment = moment.tz(expireDate + ' 09:00', 'Asia/Tokyo');
     let notifys = [
-      {date: expireMoment.clone().subtract(1, 'months').toDate(), message: "のスタンプカードの締切が1カ月前です"},
-      {date: expireMoment.clone().subtract(1, 'w').toDate(), message: "のスタンプカードの締切が1週間前です。行く予定を立てましょう"},
-      {date: expireMoment.clone().subtract(3, 'd').toDate(), message: "のスタンプカードの締切が3日前です！"},
-      {date: expireMoment.clone().subtract(1, 'd').toDate(), message: "のスタンプカードの締切が1日前です！！"},
-      {date: expireMoment.clone().toDate(), message: "のスタンプカードの締切は今日までです！！"},
-    ]
-    notifys.forEach((notify) => {
-      console.log("add scheduler: ", notify.date);
+      {
+        date: expireMoment.clone().subtract(1, 'months').toDate(),
+        message: 'のスタンプカードの締切が1カ月前です',
+      },
+      {
+        date: expireMoment.clone().subtract(1, 'w').toDate(),
+        message: 'のスタンプカードの締切が1週間前です。行く予定を立てましょう',
+      },
+      {
+        date: expireMoment.clone().subtract(3, 'd').toDate(),
+        message: 'のスタンプカードの締切が3日前です！',
+      },
+      {
+        date: expireMoment.clone().subtract(1, 'd').toDate(),
+        message: 'のスタンプカードの締切が1日前です！！',
+      },
+      {
+        date: expireMoment.clone().toDate(),
+        message: 'のスタンプカードの締切は今日までです！！',
+      },
+    ];
+    notifys.forEach(notify => {
+      console.log('add scheduler: ', notify.date);
       PushNotification.localNotificationSchedule({
         //... You can use all the options from localNotifications
         channelId: 'test-channel',
-        title: "CardKeeper",
+        title: 'CardKeeper',
         message: `${storeName}${notify.message}`, // (required)
         date: notify.date, // in 60 secs
         allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
@@ -108,9 +149,9 @@ export const CardListScreen = () => {
       title: 'CardKeeper',
       message: 'カードを登録しました。',
     });
-    console.log("カード登録しました")
+    console.log('カード登録しました');
 
-    getMyCard();
+    getMyCard(userName);
 
     hideModal();
   };
@@ -151,7 +192,8 @@ export const CardListScreen = () => {
             onStoreNameChange={handleStoreNameChange}
             onExpireDateChange={handleExpireDateChange}
             onSubmit={handleSubmmit}
-            hideModal={hideModal}></RegisterSingleCard>
+            hideModal={hideModal}
+          />
         </Modal>
       </View>
     </Provider>
