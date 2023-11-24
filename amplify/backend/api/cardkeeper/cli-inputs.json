@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/users/{userId}/cards": {
+      "name": "/users/{userId}/cards",
+      "lambdaFunction": "cardList",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
