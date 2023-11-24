@@ -12,5 +12,5 @@ const server = serververlessExpress.createServer(app);
 exports.handler = async (event, context) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   context.callbackWaitsForEmptyEventLoop = false;
-  return serververlessExpress({ app })(event, context);
+  return serververlessExpress( server ,event, context);
 };
