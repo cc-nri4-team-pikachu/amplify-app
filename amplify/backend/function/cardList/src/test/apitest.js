@@ -75,16 +75,12 @@ describe("Reading API Server", () => {
         // 準備
         const compareData7 = { cardId: 7, storeName: "テスト店名7", benefitName: "テスト特典名7", benefitCount: 1,  expireDate: "2100/08/01", expireFlg: 0, image: "テストイメージ7", tag: "テストタグ7" };
 
-        const reqData1 = { word: "店名7" };
-        const reqData2 = { word: "特典名7" };
-        const reqData3 = { word: "タグ7" };
-
         // 実行
-        const res1 = await request.get(encodeURI("/users/1/cards")).send(reqData1);
+        const res1 = await request.get("/users/1/cards?word="+encodeURI("店名7"));
         request = chai.request(app);
-        const res2 = await request.get(encodeURI("/users/1/cards")).send(reqData2);
+        const res2 = await request.get("/users/1/cards?word="+encodeURI("特典名7"));
         request = chai.request(app);
-        const res3 = await request.get(encodeURI("/users/1/cards")).send(reqData3);
+        const res3 = await request.get("/users/1/cards?word="+encodeURI("タグ7"));
 
         const resData1 = JSON.parse(res1.text);
         const resData2 = JSON.parse(res2.text);
@@ -105,9 +101,9 @@ describe("Reading API Server", () => {
             const reqData1 = { word: "店名6" };
             const reqData2 = { word: "店名7" };
             // 実行
-            const res1 = await request.get(encodeURI("/users/1/cards?valid=true")).send(reqData1);
+            const res1 = await request.get("/users/1/cards?valid=true&word="+encodeURI("店名6")).send(reqData1);
             request = chai.request(app);
-            const res2 = await request.get(encodeURI("/users/1/cards?valid=true")).send(reqData2);
+            const res2 = await request.get("/users/1/cards?valid=true&word="+encodeURI("店名7")).send(reqData2);
     
             const resData1 = JSON.parse(res1.text);
             const resData2 = JSON.parse(res2.text);
