@@ -16,7 +16,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const model = require('./model');
 
-// Timezoneを日本時間に設定
+/**
+ * @abstract Timezoneを日本時間に設定
+ * @param {Date} 変換対象の日付
+ * @returns {string} YYYY/MM/DD形式の日付
+ */
 const formatDate = function (date) {
 	return date.toLocaleDateString('ja-JP', {
 		year: 'numeric',
@@ -25,7 +29,11 @@ const formatDate = function (date) {
 	});
 };
 
-// RequestBodyのバリデーション.問題なしの場合はtrueを返す
+/**
+ * @abstract RequestBodyのバリデーション.問題なしの場合はtrueを返す
+ * @param {object} リクエストボディを受け取る
+ * @returns {boolean} true:正常,false:異常
+ */
 const validateRequestCards = function (body) {
 	// もしbodyにtime, place, reviewが存在する場合、それぞれを変数に格納
 	// 存在しない場合は初期値を設定
@@ -38,14 +46,14 @@ const validateRequestCards = function (body) {
 		tag = 'str'
 	} = body;
 
-  // expireDateのバリデーションをしたい。例えば、１２３とか入れたらエラーにしたい。
-  const tmpDate = new Date(expireDate);
+  // Date型に変換できるかどうかで、有効期限のバリデーションを行う
+  	const tmpDate = new Date(expireDate);
 	const dateFlg = isNaN(tmpDate.getDate());
 
 	if (
     // データ型のバリデーション
 		dateFlg ||
-    typeof expireDate !== 'string' ||
+    	typeof expireDate !== 'string' ||
 		typeof storeName !== 'string' ||
 		typeof benefitName !== 'string' ||
 		typeof benefitCount !== 'number' ||
@@ -109,7 +117,6 @@ app.get('/users/:userId/cards', function (req, res) {
 			result.map((card) => {
 				card.expireDate = formatDate(card.expireDate);
 			});
-      console.log(result);
 			res.status(200).json(result);
 		})
 		.catch((err) => {
@@ -155,27 +162,27 @@ app.delete('/users/:userId/cards', function (req, res) {
   }
 });
 
-app.put('/users/:userId/cards', function (req, res) {
+app.patch('/users/:userId/cards', function (req, res) {
 	// カード情報を更新
 	const userId = req.params.userId;
-	if(req.query.cardId){
-    const cardId = req.query.cardId;
-    const card = req.body;
+	const cardId = req.query.cardId;
+	if(cardId){
+		const card = req.body;
 
-    if(validateRequestCards(card) == false){
-      res.status(400).json({ msg: 'error', err: 'Invalid Request' });
-    }
-    model.updateCard(userId, cardId, card)
-          .then((result) => {
-            res.status(201).json({ msg: 'success', result: result });
-          })
-          .catch((err) => {
-            // knexで例外が発生した場合はここに入る
-            res.status(500).json({ msg: 'error', err: err });
-          });
-  }else{
-    res.status(400).json({ msg: 'error', err: 'Invalid Request' });
-  }
+		if(!validateRequestCards(card)){
+			res.status(400).json({ msg: 'error', err: 'Invalid Request' });
+		}
+		model.updateCard(userId, cardId, card)
+			.then((result) => {
+				res.status(201).json({ msg: 'success', result: result });
+			})
+			.catch((err) => {
+				// knexで例外が発生した場合はここに入る
+				res.status(500).json({ msg: 'error', err: err });
+			});
+	}else{
+		res.status(400).json({ msg: 'error', err: 'Invalid Request' });
+	}
 });
 
 app.listen(3000, function () {

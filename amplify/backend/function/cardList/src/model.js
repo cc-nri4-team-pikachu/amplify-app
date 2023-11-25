@@ -60,21 +60,46 @@ module.exports = {
             });
         },
 
-    updateCard(cardId, userId, updateData){
+    updateCard(userId,cardId,  updateData){
+        console.log("cardId: " + cardId);
+        console.log("userId: " + userId);
+        console.log("updateData: " + JSON.stringify(updateData));
+        // knexで、オブジェクトに存在する要素のみ更新したい
+        // そのために、オブジェクトの要素を一つずつ取り出す
+        // その要素が存在するかどうかを確認し、存在する場合のみ更新する
+        let updateObj = {};
+        if(updateData.storeName){
+            updateObj.store_name = updateData.storeName;
+        }
+        if(updateData.benefitName){
+            updateObj.benefit_name = updateData.benefitName;
+        }
+        if(updateData.benefitCount){
+            updateObj.benefit_count = updateData.benefitCount;
+        }
+        if(updateData.expireDate){
+            updateObj.expire_date = updateData.expireDate;
+        }
+        if(updateData.image){
+            updateObj.image = updateData.image;
+        }
+        if(updateData.tag){
+            updateObj.tag = updateData.tag;
+        }
+
         return knex(CARD)
             .where({
             "card_id": cardId,
             "user_id": userId,
             })
-            .update({
-            "benefitCount": updateData.benefitCount,
-            })
+            .update(updateObj)
             .catch((err) => {
-            throw Error(err);
+                console.error(err);
+                throw Error(err);
             }); 
     },
 
-    deleteCard(cardId, userId){
+    deleteCard(userId, cardId){
         return knex(CARD)
             .where({
             "card_id": cardId,
@@ -100,8 +125,9 @@ module.exports = {
             "expire_flg": 0,
             "tag": addData.tag,
         })
+        .returning("card_id")
         .then((result)=>{
-            return result[0];
+            return result[0].card_id;
         })
         .catch(function (err) {
             console.error(err);
