@@ -106,14 +106,12 @@ app.get('/users/:userId/cards', function (req, res) {
 	// userIdに紐づくカード情報を取得
 	const userId = req.params.userId;
 	let result = [];
-	paramObj = {};
-	if(req.query.valid){
-		console.log("req.query.valid: " + req.query.valid);
-		paramObj.expireFlg = 0;
+	let paramObj = {};
+	if(req.query.valid !== undefined){
+		paramObj.expireFlg = req.query.valid? 0 : 1;
 	}
-	if (req.query.word) {
-		console.log("req.query.word: " + req.query.word);
-		paramObj.word = req.query.word;
+	if (req.body.word) {
+		paramObj.word = req.body.word;
 	}
 	result = model
 		.getCardList(userId,paramObj)
