@@ -15,8 +15,6 @@ Amplify Params - DO NOT EDIT */
 const express = require('express');
 const bodyParser = require('body-parser');
 const model = require('./model');
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
-//const { type } = require('os');
 
 // Timezoneを日本時間に設定
 const formatDate = function (date) {
@@ -77,27 +75,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 if (process.env.ENV === 'development') {
 	// Express middlewareでヘッダーを追加する
 	app.use((req, res, next) => {
-		// AWS Lambdaのイベントに似たヘッダーを追加する
+		// Localテスト用にAPIGateway用のヘッダーを追加する
 		req.headers['x-apigateway-event'] = JSON.stringify({
 			msg: 'success'
-			/* ここにイベント情報を模倣するオブジェクトを記述 */
 		});
-
-		// AWS Lambdaのコンテキストに似たヘッダーを追加する
 		req.headers['x-apigateway-context'] = JSON.stringify({
-			/* ここにコンテキスト情報を模倣するオブジェクトを記述 */
 			msg: 'success'
 		});
 
 		next();
 	});
 }
- else {
-	app.use(awsServerlessExpressMiddleware.eventContext());
-}
 
 // Enable CORS for all methods
-
 app.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', '*');
@@ -107,7 +97,6 @@ app.use(function (req, res, next) {
 app.get('/users/:userId/cards', function (req, res) {
 	// userIdに紐づくカード情報を取得
 	const userId = req.params.userId;
-  console.log("GET!!!!!!!!!");
 	let result = [];
 	// TODO: クエリパラメータが存在し、trueの場合は有効期限内のカード情報を取得
 	// if(req.query.valid && req.query.valid == "true"){
@@ -133,9 +122,6 @@ app.post('/users/:userId/cards', function (req, res) {
 	// 新規にカード情報を登録
 	const userId = req.params.userId;
 	const card = req.body;
-  console.log("==========================");
-  console.log(validateRequestCards(card));
-  console.log("==========");
 	if (validateRequestCards(card)) {
 		const result = model
 			.addCard(userId, card)
