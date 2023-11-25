@@ -151,6 +151,10 @@ app.delete('/users/:userId/cards', function (req, res) {
     const cardId = req.query.cardId;
     model.deleteCard(userId, cardId)
           .then((result) => {
+			if(result === 0){
+				// 対象が存在しない場合はエラーを返す
+				res.status(404).json({ msg: 'error', err: 'Target Record Not Found' });
+			}
             res.status(201).json({ msg: 'success', result: result });
           })
           .catch((err) => {
@@ -174,6 +178,10 @@ app.patch('/users/:userId/cards', function (req, res) {
 		}
 		model.updateCard(userId, cardId, card)
 			.then((result) => {
+				if(result === 0){
+					// 対象が存在しない場合はエラーを返す
+					res.status(404).json({ msg: 'error', err: 'Target Record Not Found' });
+				}
 				res.status(201).json({ msg: 'success', result: result });
 			})
 			.catch((err) => {

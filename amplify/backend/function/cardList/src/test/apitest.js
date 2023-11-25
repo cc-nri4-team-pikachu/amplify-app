@@ -23,12 +23,13 @@ describe("Reading API Server", () => {
       // 正常系
       it("should return all card", async () => {
         // 準備
-        const compareData1 = { cardId: 1, storeName: "テスト店名",  benefitName: "テスト特典名",  benefitCount: 10, expireDate: "2000/01/01", image: "テストイメージ", tag: "テストタグ" };
-        const compareData2 = { cardId: 2, storeName: "テスト店名2", benefitName: "テスト特典名2", benefitCount: 11, expireDate: "2100/02/01", image: "テストイメージ2", tag: "テストタグ2" };
-        const compareData3 = { cardId: 3, storeName: "テスト店名3", benefitName: "テスト特典名3", benefitCount: 12, expireDate: "2100/03/01", image: "テストイメージ3", tag: "テストタグ3" };
-        const compareData4 = { cardId: 4, storeName: "テスト店名4", benefitName: "テスト特典名4", benefitCount: 13, expireDate: "2100/06/01", image: "テストイメージ4", tag: "テストタグ4" };
-        const compareData5 = { cardId: 5, storeName: "テスト店名5", benefitName: "テスト特典名5", benefitCount: 14, expireDate: "2100/05/01", image: "テストイメージ5", tag: "テストタグ5" };
-        const compareData7 = { cardId: 7, storeName: "テスト店名7", benefitName: "テスト特典名7", benefitCount: 1,  expireDate: "2100/08/01", image: "テストイメージ7", tag: "テストタグ7" };
+        const compareData1 = { cardId: 1, storeName: "テスト店名",  benefitName: "テスト特典名",  benefitCount: 10, expireDate: "2000/01/01", expireFlg: 0, image: "テストイメージ", tag: "テストタグ" };
+        const compareData2 = { cardId: 2, storeName: "テスト店名2", benefitName: "テスト特典名2", benefitCount: 11, expireDate: "2100/02/01", expireFlg: 0, image: "テストイメージ2", tag: "テストタグ2" };
+        const compareData3 = { cardId: 3, storeName: "テスト店名3", benefitName: "テスト特典名3", benefitCount: 12, expireDate: "2100/03/01", expireFlg: 0, image: "テストイメージ3", tag: "テストタグ3" };
+        const compareData4 = { cardId: 4, storeName: "テスト店名4", benefitName: "テスト特典名4", benefitCount: 13, expireDate: "2100/06/01", expireFlg: 0, image: "テストイメージ4", tag: "テストタグ4" };
+        const compareData5 = { cardId: 5, storeName: "テスト店名5", benefitName: "テスト特典名5", benefitCount: 14, expireDate: "2100/05/01", expireFlg: 0, image: "テストイメージ5", tag: "テストタグ5" };
+        const compareData6 = { cardId: 6, storeName: "テスト店名6", benefitName: "テスト特典名6", benefitCount: 14, expireDate: "2100/06/01", expireFlg: 1, image: "テストイメージ5", tag: "テストタグ6" };
+        const compareData7 = { cardId: 7, storeName: "テスト店名7", benefitName: "テスト特典名7", benefitCount: 1,  expireDate: "2100/08/01", expireFlg: 0, image: "テストイメージ7", tag: "テストタグ7" };
 
         // 実行
         const res = await request.get("/users/1/cards");
@@ -36,14 +37,15 @@ describe("Reading API Server", () => {
         console.log("GETDATA:"+resData);
         // 検証
         res.should.be.json;
-        resData.length.should.equal(6);
+        resData.length.should.equal(7);
         resData[0].should.deep.equal(compareData1);
         resData[1].should.deep.equal(compareData2);
         resData[2].should.deep.equal(compareData3);
         // テストデータとして、４より５が先に来るようにしている
         resData[3].should.deep.equal(compareData5);
         resData[4].should.deep.equal(compareData4);
-        resData[5].should.deep.equal(compareData7);
+        resData[5].should.deep.equal(compareData6);
+        resData[6].should.deep.equal(compareData7);
       });
     });
 
@@ -213,8 +215,6 @@ describe("Reading API Server", () => {
         );
         //検証
         resPatch.should.have.status(201);
-        //console.log(resData2);
-        //console.log("targetId"+targetRecordId);
         targetRecord[0].storeName.should.equal(patchData.storeName);
         targetRecord[0].benefitName.should.equal(patchData.benefitName);
         targetRecord[0].benefitCount.should.equal(patchData.benefitCount);
@@ -291,44 +291,75 @@ describe("Reading API Server", () => {
         res5.should.have.status(400);
         res6.should.have.status(400);
       });
+      // 異常系 - 対象データなし
+      it("should return Status 404", async () => {
+        const patchData = { 
+          storeName: "PATCHテストNo.4店名",
+          benefitName: "PATCHテスト特典名",
+          benefitCount: 100,
+          expireDate: "2001/12/31",
+          image: "PathcTestImage.png",
+          tag: "#テストタグ_"
+        };
+        // 実行
+        const res = await request.patch("/users/4/cards?cardId=999").send(patchData);
+
+        //検証
+        res.should.have.status(404);
+      });
     });
 
-    // // 【DELETE】読書の記録削除API
-    // describe("DELETE /users/:user_id/books/:book_id/records/:redord_id - Delete Record", () => {
-    //   // 正常系
-    //   it("should Delete a Record", async () => {
-    //     // 準備
-    //     const addData = {
-    //       date: "2023/11/14",
-    //       time: 200,
-    //       place: "cafe",
-    //       review: 1.0,
-    //     };
-    //     const resPost = await request.post("/users/3/books/12").send(addData);
+    // 【DELETE】カードの削除API
+    describe("DELETE /users/:user_id/cards?cardId=X - Delete Record", () => {
+      // 正常系
+      it("should Delete a Record", async () => {
+        // 準備
+        const randomNum = Math.floor(Math.random() * 1000);
+        const addData = { 
+                storeName: "DELETEテストNo.1店名"+randomNum,
+                benefitName: "テスト特典名",
+                benefitCount: 10,
+                expireDate: "2023/12/31",
+                image: "testImage.png",
+                tag: "#テストタグ#テストタグ2#テストタグ3"
+              };
+        const resPost = await request.post("/users/2/cards").send(addData);
+        const resPostData = JSON.parse(resPost.text);
+        const targetRecordId = resPostData.cardId;
 
-    //     request = chai.request(server);
-    //     const resGet = await request.get("/users/3/books/12");
-    //     const resData = JSON.parse(resGet.text);
-    //     const targetRecordId = resData.records[0].id;
+        request = chai.request(app);
+        const resGet = await request.get("/users/2/cards");
+        const resData = JSON.parse(resGet.text);
+        const targetRecord = resData.filter((data)=>data.cardId == resPostData.cardId);
+        
+        // 実行
+        request = chai.request(app);
+        const resDelete = await request.delete(
+          "/users/2/cards?cardId=" + targetRecordId
+        );
+        const resDeleteData = JSON.parse(resDelete.text);
 
-    //     // 実行
-    //     request = chai.request(server);
-    //     const res = await request.delete(
-    //       "/users/3/books/12/records/" + targetRecordId
-    //     );
+        // 検証準備
+        request = chai.request(app);
+        const resGet2 = await request.get("/users/2/cards");
+        const resData2 = JSON.parse(resGet2.text);
+        const targetRecord2 = resData2.filter((data)=>data.cardId == resPostData.cardId);
 
-    //     //検証
-    //     res.should.have.status(200);
-    //   });
+        //検証
+        resDelete.should.have.status(201);
+        resDeleteData.should.have.keys("msg","result");
+        targetRecord[0].expireFlg.should.equal(0);
+        targetRecord2[0].expireFlg.should.equal(1);
+      });
 
-    //   // 異常系 - 対象データなし
-    //   it("should return Status 404", async () => {
-    //     // 実行
-    //     const res = await request.delete("/users/4/books/160/records/0");
+      // 異常系 - 対象データなし
+      it("should return Status 404", async () => {
+        // 実行
+        const res = await request.delete("/users/4/cards?cardId=999");
 
-    //     //検証
-    //     res.should.have.status(404);
-    //   });
-    //});
+        //検証
+        res.should.have.status(404);
+      });
+    });
   });
 });
