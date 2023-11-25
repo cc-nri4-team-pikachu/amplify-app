@@ -106,12 +106,17 @@ app.get('/users/:userId/cards', function (req, res) {
 	// userIdに紐づくカード情報を取得
 	const userId = req.params.userId;
 	let result = [];
-	// TODO: クエリパラメータが存在し、trueの場合は有効期限内のカード情報を取得
-	// if(req.query.valid && req.query.valid == "true"){
-	// result = model.getValidCardList(userId);
-	// }else{
+	paramObj = {};
+	if(req.query.valid){
+		console.log("req.query.valid: " + req.query.valid);
+		paramObj.expireFlg = 0;
+	}
+	if (req.query.word) {
+		console.log("req.query.word: " + req.query.word);
+		paramObj.word = req.query.word;
+	}
 	result = model
-		.getCardList(userId)
+		.getCardList(userId,paramObj)
 		.then((result) => {
 			// 有効期限をYYYY/MM/DD形式に変換
 			result.map((card) => {
