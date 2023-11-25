@@ -29,7 +29,7 @@ module.exports = {
             });
     },
 
-    getValidCardList(userId) {
+    getValidCardList(userId, sort="expire_date") {
         // YYYY-MM-DD形式の本日の日付を取得
         const today = new Date();
         // 本日の日付をYYYY-MM-DD形式に変換

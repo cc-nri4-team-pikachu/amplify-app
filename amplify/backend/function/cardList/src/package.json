@@ -14,7 +14,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@vendia/serverless-express": "^4.10.4",
-    "aws-serverless-express": "^3.4.0",
     "body-parser": "^1.17.1",
     "dotenv": "^16.3.1",
     "express": "^4.15.2",
