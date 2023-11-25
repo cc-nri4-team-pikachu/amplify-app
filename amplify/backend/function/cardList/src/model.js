@@ -8,7 +8,16 @@ module.exports = {
      * @param {number} userId - The max number of records to return.
      * @return {Promise<Array>} A promise that resolves to an array of customers.
      */
-    getCardList(userId, sort="expire_date") {
+    getCardList(userId, paramObj, sort="expire_date") {
+ 
+        // YYYY-MM-DD形式の本日の日付を取得
+        const today = new Date();
+        // 本日の日付をYYYY-MM-DD形式に変換
+        const year = today.getFullYear();
+        const month = ("0" + (today.getMonth() + 1)).slice(-2);
+        const date = ("0" + today.getDate()).slice(-2);
+        const todayDate = year + "-" + month + "-" + date;
+
         return knex(CARD)
             .select({
                 cardId: "card.card_id",
@@ -20,53 +29,27 @@ module.exports = {
                 image: "card.image",
                 tag: "card.tag",
             })
-            .where({
-                "user_id": userId,
+            .where((builder)=>{
+                builder.where("user_id", "=", userId);
+                if(paramObj.expireFlg !== undefined){
+                    console.log("expireFlg: " + paramObj.expireFlg);
+                    builder = builder.andWhere("expire_flg", "=", paramObj.expireFlg)
+                                .andWhere("expire_date", ">=", todayDate);
+                }
+                if(paramObj.word){
+                    console.log("word: " + paramObj.word);
+                    builder = builder.andWhere((subBuilder)=>{
+                                subBuilder.orWhere("store_name", "like", "%" + paramObj.word + "%")
+                                    .orWhere("benefit_name", "like", "%" + paramObj.word + "%")
+                                    .orWhere("tag", "like", "%" + paramObj.word + "%");
+                            });
+                }
             })
             .orderBy(sort, "asc")
             .catch(function (err) {
                 console.error(err);
             });
     },
-
-    getValidCardList(userId, sort="expire_date", expireFlg=999) {
-        // YYYY-MM-DD形式の本日の日付を取得
-        const today = new Date();
-        // 本日の日付をYYYY-MM-DD形式に変換
-        const year = today.getFullYear();
-        const month = ("0" + (today.getMonth() + 1)).slice(-2);
-        const date = ("0" + today.getDate()).slice(-2);
-        const todayDate = year + "-" + month + "-" + date;
-
-        const whereObj = {};
-        whereObj["user_id"] = userId;
-        whereObj["expire_date"] = ">=" + todayDate;
-        // expireFlgがデフォルト値の999の場合は、expire_flgの条件を追加しない
-        if(expireFlg !== 999){
-            whereObj["expire_flg"] = expireFlg;
-        }
-
-        return knex
-            .select({
-                cardId: "card.card_id",
-                storeName: "card.store_name",
-                benefitName: "card.benefit_name",
-                benefitCount: "card.benefit_count",
-                expireDate: "card.expire_date",
-                image: "card.image",
-                tag: "card.tag",
-            })
-            .from(CARD)
-            .where({
-                "user_id": userId,
-                "expire_date": ">=" + todayDate,
-                "expire_flg": expireFlg,
-            })
-            .orderBy(sort, "asc")
-            .catch(function (err) {
-                console.error(err);
-            });
-        },
 
     updateCard(userId,cardId,  updateData){
         console.log("cardId: " + cardId);

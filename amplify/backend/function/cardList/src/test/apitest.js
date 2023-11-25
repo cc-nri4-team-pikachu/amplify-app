@@ -47,6 +47,71 @@ describe("Reading API Server", () => {
         resData[5].should.deep.equal(compareData6);
         resData[6].should.deep.equal(compareData7);
       });
+
+      // 正常系 - 有効データのみ取得
+      it("should return all valid card", async () => {
+        // 準備
+        const compareData2 = { cardId: 2, storeName: "テスト店名2", benefitName: "テスト特典名2", benefitCount: 11, expireDate: "2100/02/01", expireFlg: 0, image: "テストイメージ2", tag: "テストタグ2" };
+        const compareData3 = { cardId: 3, storeName: "テスト店名3", benefitName: "テスト特典名3", benefitCount: 12, expireDate: "2100/03/01", expireFlg: 0, image: "テストイメージ3", tag: "テストタグ3" };
+        const compareData4 = { cardId: 4, storeName: "テスト店名4", benefitName: "テスト特典名4", benefitCount: 13, expireDate: "2100/06/01", expireFlg: 0, image: "テストイメージ4", tag: "テストタグ4" };
+        const compareData5 = { cardId: 5, storeName: "テスト店名5", benefitName: "テスト特典名5", benefitCount: 14, expireDate: "2100/05/01", expireFlg: 0, image: "テストイメージ5", tag: "テストタグ5" };
+        const compareData7 = { cardId: 7, storeName: "テスト店名7", benefitName: "テスト特典名7", benefitCount: 1,  expireDate: "2100/08/01", expireFlg: 0, image: "テストイメージ7", tag: "テストタグ7" };
+
+        // 実行
+        const res = await request.get("/users/1/cards?valid=true");
+        const resData = JSON.parse(res.text);
+        // 検証
+        resData.length.should.equal(5);
+        resData[0].should.deep.equal(compareData2);
+        resData[1].should.deep.equal(compareData3);
+        resData[2].should.deep.equal(compareData5);
+        // テストデータとして、４より５が先に来るようにしている
+        resData[3].should.deep.equal(compareData4);
+        resData[4].should.deep.equal(compareData7);
+      });
+
+      // 正常系 - キーワード指定
+      it("should return search card", async () => {
+        // 準備
+        const compareData7 = { cardId: 7, storeName: "テスト店名7", benefitName: "テスト特典名7", benefitCount: 1,  expireDate: "2100/08/01", expireFlg: 0, image: "テストイメージ7", tag: "テストタグ7" };
+
+        // 実行
+        const res1 = await request.get(encodeURI("/users/1/cards?word=店名7"));
+        request = chai.request(app);
+        const res2 = await request.get(encodeURI("/users/1/cards?word=特典名7"));
+        request = chai.request(app);
+        const res3 = await request.get(encodeURI("/users/1/cards?word=タグ7"));
+
+        const resData1 = JSON.parse(res1.text);
+        const resData2 = JSON.parse(res2.text);
+        const resData3 = JSON.parse(res3.text);
+        // 検証
+        resData1.length.should.equal(1);
+        resData2.length.should.equal(1);
+        resData3.length.should.equal(1);
+        resData1[0].should.deep.equal(compareData7);
+        resData2[0].should.deep.equal(compareData7);
+        resData3[0].should.deep.equal(compareData7);
+      });
+
+          // 正常系 - キーワード指定
+          it("should return all valid and search card", async () => {
+            // 準備
+            const compareData7 = { cardId: 7, storeName: "テスト店名7", benefitName: "テスト特典名7", benefitCount: 1,  expireDate: "2100/08/01", expireFlg: 0, image: "テストイメージ7", tag: "テストタグ7" };
+    
+            // 実行
+            const res1 = await request.get(encodeURI("/users/1/cards?valid=true&word=店名6"));
+            request = chai.request(app);
+            const res2 = await request.get(encodeURI("/users/1/cards?valid=true&word=特典名7"));
+    
+            const resData1 = JSON.parse(res1.text);
+            const resData2 = JSON.parse(res2.text);
+            // 検証
+            resData1.length.should.equal(0);
+            resData2.length.should.equal(1);
+            resData2[0].should.deep.equal(compareData7);
+          });
+
     });
 
     // 【POST】カード登録API
