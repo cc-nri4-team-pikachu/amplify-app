@@ -19,7 +19,7 @@ const initAllCard = [
   {storeName: '美容室', expireDate: '2022/2/28'},
   {storeName: '美容室', expireDate: '2022/2/28'},
   {storeName: '美容室', expireDate: '2022/2/28'},
-];
+]; 
 
 const cardApiUri =
   'https://x2knth17r1.execute-api.us-east-1.amazonaws.com/dev/users';
@@ -35,15 +35,11 @@ export const CardListScreen = () => {
     try {
       // Amplify Auth モジュールを使用してユーザー情報を取得
 
-      //要変更（TODO）
-      setUserId("testUser");
-      await getMyCard("testUser");
-
       const user = await Auth.currentAuthenticatedUser();
       // 38-40行目はをuser.userNameを使うように変更する必要がある。（TODO）
-      // console.log(`${user.userName}でログインしました`);
-      // setUserId(user.userName);
-      // await getMyCard(user.userName);
+      console.log(`${user.username}でログインしました`);
+      setUserId(user.username);
+      await getMyCard(user.username);
     } catch (error) {
       console.error('Error fetching user info:', error);
     }
@@ -55,7 +51,7 @@ export const CardListScreen = () => {
     fetch(cardApiUserUri)
       .then(res => res.json())
       .then(result => {
-        console.log(`userId ${userName} cards: `, result);
+        // console.log(`userId ${userName} cards: `, result);
         setAllCard(result);
       })
       .catch(error => {
