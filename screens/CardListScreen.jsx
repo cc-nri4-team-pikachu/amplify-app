@@ -36,13 +36,14 @@ export const CardListScreen = () => {
       // Amplify Auth モジュールを使用してユーザー情報を取得
 
       //要変更（TODO）
-      setUserId(1);
-      await getMyCard(1);
+      setUserId("testUser");
+      await getMyCard("testUser");
 
       const user = await Auth.currentAuthenticatedUser();
-      //38-40行目はをuser.userNameを使うように変更する必要がある。（TODO）
-      //setUserId(user.userName);
-      //await getMyCard(user.userName);
+      // 38-40行目はをuser.userNameを使うように変更する必要がある。（TODO）
+      // console.log(`${user.userName}でログインしました`);
+      // setUserId(user.userName);
+      // await getMyCard(user.userName);
     } catch (error) {
       console.error('Error fetching user info:', error);
     }
@@ -54,7 +55,7 @@ export const CardListScreen = () => {
     fetch(cardApiUserUri)
       .then(res => res.json())
       .then(result => {
-        console.log(`userId ${userId} cards: `, result);
+        console.log(`userId ${userName} cards: `, result);
         setAllCard(result);
       })
       .catch(error => {
@@ -100,8 +101,9 @@ export const CardListScreen = () => {
         expireDate: expireDate,
       }),
     })
-      .then(res => {
-        console.log(res);
+      .then(res => res.json())
+      .then(result => {
+        console.log(result);
         console.log('レスポンス送信');
       })
       .catch(error => {
@@ -117,7 +119,7 @@ export const CardListScreen = () => {
       },
       {
         date: expireMoment.clone().subtract(1, 'w').toDate(),
-        message: 'のスタンプカードの締切が1週間前です。行く予定を立てましょう',
+        message: 'のスタンプカードの締切が1週間前です。予定を立てましょう',
       },
       {
         date: expireMoment.clone().subtract(3, 'd').toDate(),
@@ -151,7 +153,7 @@ export const CardListScreen = () => {
     });
     console.log('カード登録しました');
 
-    getMyCard(userName);
+    getMyCard(userId);
 
     hideModal();
   };
