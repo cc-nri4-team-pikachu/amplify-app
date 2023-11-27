@@ -19,13 +19,13 @@ const initAllCard = [
   {storeName: '美容室', expireDate: '2022/2/28'},
   {storeName: '美容室', expireDate: '2022/2/28'},
   {storeName: '美容室', expireDate: '2022/2/28'},
-]; 
+];
 
 const cardApiUri =
   'https://x2knth17r1.execute-api.us-east-1.amazonaws.com/dev/users';
 
 export const CardListScreen = () => {
-  const [allCard, setAllCard] = useState(initAllCard);
+  const [allCard, setAllCard] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [storeName, setStoreName] = useState('');
   const [expireDate, setExpireDate] = useState('');
