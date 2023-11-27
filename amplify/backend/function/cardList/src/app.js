@@ -110,8 +110,8 @@ app.get('/users/:userId/cards', function (req, res) {
 	if(req.query.valid !== undefined){
 		paramObj.expireFlg = req.query.valid? 0 : 1;
 	}
-	if (req.body.word) {
-		paramObj.word = req.body.word;
+	if (req.query.word) {
+		paramObj.word = decodeURIComponent(req.query.word);
 	}
 	result = model
 		.getCardList(userId,paramObj)
