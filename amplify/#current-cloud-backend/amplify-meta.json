@@ -31,12 +31,53 @@
         "RootUrl": "https://x2knth17r1.execute-api.us-east-1.amazonaws.com/dev",
         "ApiId": "x2knth17r1"
       },
-      "lastPushTimeStamp": "2023-11-24T09:21:07.541Z",
+      "lastPushTimeStamp": "2023-11-27T03:20:33.292Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/api/cardkeeper-cloudformation-template.json",
         "logicalId": "apicardkeeper"
       },
-      "lastPushDirHash": "yIe7184f/CD548f7STTDwAc7UzQ="
+      "lastPushDirHash": "eQdfLnPDGdo1nFnHBaZWU0w4CRE="
+    }
+  },
+  "auth": {
+    "cardkeeperf00af87d": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "us-east-1_ilnfVkAGA",
+        "AppClientIDWeb": "3srolqk27acporlqkf1s9ntd7s",
+        "AppClientID": "1unhtgejc5sk2h0ub65si4r9us",
+        "IdentityPoolId": "us-east-1:507580b5-0f62-4100-a5a5-f6ebd7db1e66",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:897995364530:userpool/us-east-1_ilnfVkAGA",
+        "IdentityPoolName": "cardkeeperf00af87d_identitypool_f00af87d__dev",
+        "UserPoolName": "cardkeeperf00af87d_userpool_f00af87d"
+      },
+      "lastPushTimeStamp": "2023-11-27T03:20:33.292Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/auth/cardkeeperf00af87d-cloudformation-template.json",
+        "logicalId": "authcardkeeperf00af87d"
+      },
+      "lastPushDirHash": "+BuGDTmwxReYegWfM/lh7RSy6ec="
     }
   },
   "function": {
@@ -52,20 +93,20 @@
         "Name": "cardList-dev",
         "LambdaExecutionRole": "cardkeeperLambdaRole4188ef7e-dev"
       },
-      "lastPushTimeStamp": "2023-11-24T09:21:07.541Z",
+      "lastPushTimeStamp": "2023-11-27T03:20:33.292Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/function/cardList-cloudformation-template.json",
         "logicalId": "functioncardList"
       },
-      "lastBuildTimeStamp": "2023-11-24T09:18:36.435Z",
+      "lastBuildTimeStamp": "2023-11-27T03:18:57.034Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2023-11-24T09:19:14.018Z",
-      "distZipFilename": "cardList-794a4e624b4742666736-build.zip",
+      "lastPackageTimeStamp": "2023-11-27T03:18:58.707Z",
+      "distZipFilename": "cardList-586a41777973664b737a-build.zip",
       "s3Bucket": {
         "deploymentBucketName": "amplify-cardkeeper-dev-145026-deployment",
-        "s3Key": "amplify-builds/cardList-794a4e624b4742666736-build.zip"
+        "s3Key": "amplify-builds/cardList-586a41777973664b737a-build.zip"
       },
-      "lastPushDirHash": "bWmISHJViWxmJuOcS1uHhoVByPU="
+      "lastPushDirHash": "cteAhhNIOuSAbp1VWIZEBG0/Hvo="
     },
     "usersfunc": {
       "build": true,
@@ -78,61 +119,20 @@
         "Name": "usersfunc-dev",
         "LambdaExecutionRole": "cardkeeperLambdaRole29d4107c-dev"
       },
-      "lastPushTimeStamp": "2023-11-24T09:21:07.541Z",
+      "lastPushTimeStamp": "2023-11-27T03:20:33.292Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/function/usersfunc-cloudformation-template.json",
         "logicalId": "functionusersfunc"
       },
-      "lastBuildTimeStamp": "2023-11-24T09:19:17.783Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2023-11-24T09:19:22.883Z",
-      "distZipFilename": "usersfunc-385268662f5a6f447365-build.zip",
       "s3Bucket": {
         "deploymentBucketName": "amplify-cardkeeper-dev-145026-deployment",
-        "s3Key": "amplify-builds/usersfunc-385268662f5a6f447365-build.zip"
+        "s3Key": "amplify-builds/usersfunc-68712b44636176703847-build.zip"
       },
-      "lastPushDirHash": "LGQI+3vf+mn9JFj062naE43Blek="
-    }
-  },
-  "auth": {
-    "cardkeeperf00af87d": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false,
-      "frontendAuthConfig": {
-        "socialProviders": [],
-        "usernameAttributes": [],
-        "signupAttributes": [
-          "EMAIL"
-        ],
-        "passwordProtectionSettings": {
-          "passwordPolicyMinLength": 8,
-          "passwordPolicyCharacters": []
-        },
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
-        ],
-        "verificationMechanisms": [
-          "EMAIL"
-        ]
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/auth/cardkeeperf00af87d-cloudformation-template.json",
-        "logicalId": "authcardkeeperf00af87d"
-      },
-      "lastPushTimeStamp": "2023-11-24T09:21:07.541Z",
-      "output": {
-        "UserPoolId": "us-east-1_ilnfVkAGA",
-        "AppClientIDWeb": "3srolqk27acporlqkf1s9ntd7s",
-        "AppClientID": "1unhtgejc5sk2h0ub65si4r9us",
-        "IdentityPoolId": "us-east-1:507580b5-0f62-4100-a5a5-f6ebd7db1e66",
-        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:897995364530:userpool/us-east-1_ilnfVkAGA",
-        "IdentityPoolName": "cardkeeperf00af87d_identitypool_f00af87d__dev",
-        "UserPoolName": "cardkeeperf00af87d_userpool_f00af87d"
-      },
-      "lastPushDirHash": "+BuGDTmwxReYegWfM/lh7RSy6ec="
+      "lastBuildTimeStamp": "2023-11-27T03:19:00.829Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-11-27T03:19:01.207Z",
+      "distZipFilename": "usersfunc-68712b44636176703847-build.zip",
+      "lastPushDirHash": "gwHWTM4AjPATxkB8522P2Bgf5yI="
     }
   }
 }

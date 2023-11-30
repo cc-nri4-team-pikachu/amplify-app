@@ -15,7 +15,7 @@
       "function": {
         "usersfunc": {
           "deploymentBucketName": "amplify-cardkeeper-dev-145026-deployment",
-          "s3Key": "amplify-builds/usersfunc-385268662f5a6f447365-build.zip"
+          "s3Key": "amplify-builds/usersfunc-68712b44636176703847-build.zip"
         },
         "cardList": {
           "dbHost": "demodb.cluster-cvy2pablqtdm.us-east-1.rds.amazonaws.com",
@@ -23,7 +23,7 @@
           "dbUser": "postgres",
           "dbPassword": "postgres",
           "deploymentBucketName": "amplify-cardkeeper-dev-145026-deployment",
-          "s3Key": "amplify-builds/cardList-794a4e624b4742666736-build.zip"
+          "s3Key": "amplify-builds/cardList-586a41777973664b737a-build.zip"
         }
       },
       "auth": {

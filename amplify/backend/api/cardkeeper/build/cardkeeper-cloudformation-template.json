@@ -368,7 +368,7 @@
         "Name": "cardkeeper"
       }
     },
-    "cardkeeperDefault4XXResponse683060ca": {
+    "cardkeeperDefault4XXResponse77b221d3": {
       "Type": "AWS::ApiGateway::GatewayResponse",
       "Properties": {
         "ResponseType": "DEFAULT_4XX",
@@ -383,7 +383,7 @@
         }
       }
     },
-    "cardkeeperDefault5XXResponse683060ca": {
+    "cardkeeperDefault5XXResponse77b221d3": {
       "Type": "AWS::ApiGateway::GatewayResponse",
       "Properties": {
         "ResponseType": "DEFAULT_5XX",
@@ -398,7 +398,7 @@
         }
       }
     },
-    "DeploymentAPIGWcardkeeper3e067990": {
+    "DeploymentAPIGWcardkeeper672803d9": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -416,8 +416,8 @@
         }
       },
       "DependsOn": [
-        "cardkeeperDefault4XXResponse683060ca",
-        "cardkeeperDefault5XXResponse683060ca"
+        "cardkeeperDefault4XXResponse77b221d3",
+        "cardkeeperDefault5XXResponse77b221d3"
       ]
     }
   }

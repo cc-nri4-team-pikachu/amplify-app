@@ -173,32 +173,6 @@
         }
       }
     },
-    "functioncardList": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/function/cardList-cloudformation-template.json",
-        "Parameters": {
-          "dbHost": "demodb.cluster-cvy2pablqtdm.us-east-1.rds.amazonaws.com",
-          "dbName": "cardkeeper",
-          "dbUser": "postgres",
-          "dbPassword": "postgres",
-          "deploymentBucketName": "amplify-cardkeeper-dev-145026-deployment",
-          "s3Key": "amplify-builds/cardList-794a4e624b4742666736-build.zip",
-          "env": "dev"
-        }
-      }
-    },
-    "functionusersfunc": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/function/usersfunc-cloudformation-template.json",
-        "Parameters": {
-          "deploymentBucketName": "amplify-cardkeeper-dev-145026-deployment",
-          "s3Key": "amplify-builds/usersfunc-385268662f5a6f447365-build.zip",
-          "env": "dev"
-        }
-      }
-    },
     "authcardkeeperf00af87d": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
@@ -248,6 +222,32 @@
           },
           "breakCircularDependency": true,
           "dependsOn": "",
+          "env": "dev"
+        }
+      }
+    },
+    "functioncardList": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/function/cardList-cloudformation-template.json",
+        "Parameters": {
+          "dbHost": "demodb.cluster-cvy2pablqtdm.us-east-1.rds.amazonaws.com",
+          "dbName": "cardkeeper",
+          "dbUser": "postgres",
+          "dbPassword": "postgres",
+          "deploymentBucketName": "amplify-cardkeeper-dev-145026-deployment",
+          "s3Key": "amplify-builds/cardList-586a41777973664b737a-build.zip",
+          "env": "dev"
+        }
+      }
+    },
+    "functionusersfunc": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-cardkeeper-dev-145026-deployment/amplify-cfn-templates/function/usersfunc-cloudformation-template.json",
+        "Parameters": {
+          "deploymentBucketName": "amplify-cardkeeper-dev-145026-deployment",
+          "s3Key": "amplify-builds/usersfunc-68712b44636176703847-build.zip",
           "env": "dev"
         }
       }

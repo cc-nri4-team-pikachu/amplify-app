@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, Image, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {CardListScreen} from './screens/CardListScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -34,10 +34,10 @@ const App = () => {
         initialRouteName="CardListScreen"
         // もしログイン画面でタブ表示が不要であれば、CardList要素のoptionsに追加する
         screenOptions={{
-          statusBarColor: blue.primary,
+          statusBarColor: '#FC8E4B',
           title: 'CardKeeper',
-          headerStyle: {backgroundColor: blue.primary},
-          headerTitleStyle: {color: blue[1]},
+          headerStyle: {backgroundColor: '#FC8E4B'},
+          headerTitleStyle: {color: '#FFFFFF'},
         }}>
         <Stack.Screen
           name="CardList"
@@ -46,7 +46,7 @@ const App = () => {
             headerBackVisible: false,
             headerRight: () => (
               <TouchableOpacity onPress={handleSignOut}>
-                <Text style={{color: blue[1], marginRight: 10}}>
+                <Text style={{color: '#FFFFFF', marginRight: 10}}>
                   ログアウト
                 </Text>
               </TouchableOpacity>
